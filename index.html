@@ -43,7 +43,7 @@
         }
         #map {
             width: 100%;
-            height: 650px; /* 縦長に大きく変更しました */
+            height: 650px; /* 縦長のまま */
             border-radius: 4px;
             z-index: 1;
         }
@@ -230,6 +230,16 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
+        // ★赤色で半分のサイズのピンを定義
+        const redHalfIcon = L.icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+            iconSize: [12.5, 20.5], // 元のサイズ(25x41)の半分
+            iconAnchor: [6.25, 20.5], // ピンの先端を座標に合わせる
+            popupAnchor: [0, -20], // ポップアップが出る位置を調整
+            shadowSize: [20.5, 20.5] // 影のサイズも半分
+        });
+
         // 全自治体の座標データ（50箇所）
         const locations = [
             { name: "札幌市", lat: 43.0621, lng: 141.3544 },
@@ -292,9 +302,9 @@
             { name: "鹿児島市", lat: 31.5967, lng: 130.5572 }
         ];
 
-        // ループ処理で地図上にピンを配置
+        // ループ処理で地図上に作成した赤いピンを配置
         locations.forEach(function(loc) {
-            L.marker([loc.lat, loc.lng])
+            L.marker([loc.lat, loc.lng], { icon: redHalfIcon })
                 .addTo(map)
                 .bindPopup('<b>' + loc.name + '</b>'); // ピンをクリックした時に名前を表示
         });
