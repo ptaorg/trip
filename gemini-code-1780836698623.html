@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>対象自治体一覧</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #2c3e50;
+            color: #ffffff;
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+        header h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 2rem;
+        }
+        header p {
+            margin: 0;
+            opacity: 0.8;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        /* マップエリア */
+        .map-section {
+            margin-bottom: 3rem;
+            background: #ffffff;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        #map {
+            width: 100%;
+            height: 500px;
+            border-radius: 4px;
+            z-index: 1;
+        }
+        /* 地方ごとのグリッドデザイン */
+        .region-section h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+        }
+        .region-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .region-card {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border-top: 4px solid #3498db;
+        }
+        .region-card h3 {
+            margin-top: 0;
+            font-size: 1.2rem;
+            color: #2c3e50;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .city-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .city-list li {
+            background: #f8f9fa;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #495057;
+            border: 1px solid #e9ecef;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>対象自治体マップ＆一覧</h1>
+        <p>全国の各地方ごとの詳細リスト</p>
+    </header>
+
+    <div class="container">
+        
+        <section class="map-section">
+            <div id="map"></div>
+        </section>
+
+        <section class="region-section">
+            <h2>地方別リスト</h2>
+            <div class="region-grid">
+                
+                <div class="region-card">
+                    <h3>【北海道】</h3>
+                    <ul class="city-list">
+                        <li>札幌市</li>
+                    </ul>
+                </div>
+
+                <div class="region-card">
+                    <h3>【東北】</h3>
+                    <ul class="city-list">
+                        <li>仙台市</li>
+                        <li>いわき市</li>
+                        <li>須賀川市</li>
+                    </ul>
+                </div>
+
+                <div class="region-card">
+                    <h3>【関東】</h3>
+                    <ul class="city-list">
+                        <li>潮来市</li>
+                        <li>久喜市</li>
+                        <li>埼玉県</li>
+                        <li>川口市</li>
+                        <li>幸手市</li>
+                        <li>越谷市</li>
+                        <li>三鷹市</li>
+                        <li>墨田区</li>
+                        <li>江戸川区</li>
+                        <li>足立区</li>
+                        <li>厚木市</li>
+                        <li>川崎市</li>
+                        <li>海老名市</li>
+                        <li>相模原市</li>
+                        <li>神奈川県</li>
+                        <li>茅ヶ崎市</li>
+                    </ul>
+                </div>
+
+                <div class="region-card">
+                    <h3>【中部】</h3>
+                    <ul class="city-list">
+                        <li>長岡市</li>
+                        <li>射水市</li>
+                        <li>下諏訪町</li>
+                        <li>各務原市</li>
+                        <li>岐阜県</li>
+                        <li>富士宮市</li>
+                        <li>静岡市</li>
+                        <li>一宮市</li>
+                        <li>名古屋市</li>
+                        <li>安城市</li>
+                        <li>愛知県</li>
+                        <li>愛西市</li>
+                        <li>扶桑町</li>
+                        <li>豊橋市</li>
+                        <li>豊田市</li>
+                        <li>長久手市</li>
+                        <li>三重県</li>
+                    </ul>
+                </div>
+
+                <div class="region-card">
+                    <h3>【近畿】</h3>
+                    <ul class="city-list">
+                        <li>大津市</li>
+                        <li>彦根市</li>
+                        <li>甲賀市</li>
+                        <li>野洲市</li>
+                        <li>亀岡市</li>
+                        <li>京都市</li>
+                        <li>交野市</li>
+                        <li>大阪市</li>
+                        <li>枚方市</li>
+                        <li>茨木市</li>
+                        <li>高槻市</li>
+                        <li>姫路市</li>
+                    </ul>
+                </div>
+
+                <div class="region-card">
+                    <h3>【中国】</h3>
+                    <ul class="city-list">
+                        <li>岡山市</li>
+                        <li>岡山県</li>
+                        <li>広島市</li>
+                    </ul>
+                </div>
+
+                <div class="region-card">
+                    <h3>【四国】</h3>
+                    <ul class="city-list">
+                        <li>徳島市</li>
+                    </ul>
+                </div>
+
+                <div class="region-card">
+                    <h3>【九州】</h3>
+                    <ul class="city-list">
+                        <li>北九州市</li>
+                        <li>宗像市</li>
+                        <li>熊本市</li>
+                        <li>大分県</li>
+                        <li>鹿児島市</li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // 日本全体が見える位置で地図を初期化
+        const map = L.map('map').setView([36.5, 137.0], 5);
+
+        // 背景地図（OpenStreetMap）を設定
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // 全自治体の座標データ（50箇所）
+        const locations = [
+            { name: "札幌市", lat: 43.0621, lng: 141.3544 },
+            { name: "仙台市", lat: 38.2682, lng: 140.8694 },
+            { name: "いわき市", lat: 37.0504, lng: 140.8877 },
+            { name: "須賀川市", lat: 37.2865, lng: 140.3734 },
+            { name: "潮来市", lat: 35.9344, lng: 140.5453 },
+            { name: "久喜市", lat: 36.0621, lng: 139.6672 },
+            { name: "埼玉県", lat: 35.8574, lng: 139.6489 },
+            { name: "川口市", lat: 35.8079, lng: 139.7238 },
+            { name: "幸手市", lat: 36.0747, lng: 139.7247 },
+            { name: "越谷市", lat: 35.8911, lng: 139.7911 },
+            { name: "三鷹市", lat: 35.6836, lng: 139.5594 },
+            { name: "墨田区", lat: 35.7129, lng: 139.8015 },
+            { name: "江戸川区", lat: 35.6783, lng: 139.8711 },
+            { name: "足立区", lat: 35.7750, lng: 139.8044 },
+            { name: "厚木市", lat: 35.4431, lng: 139.3622 },
+            { name: "川崎市", lat: 35.5302, lng: 139.7029 },
+            { name: "海老名市", lat: 35.4461, lng: 139.3917 },
+            { name: "相模原市", lat: 35.5714, lng: 139.3736 },
+            { name: "神奈川県", lat: 35.4478, lng: 139.6425 },
+            { name: "茅ヶ崎市", lat: 35.3323, lng: 139.4061 },
+            { name: "長岡市", lat: 37.4461, lng: 138.8511 },
+            { name: "射水市", lat: 36.7299, lng: 137.0520 },
+            { name: "下諏訪町", lat: 36.0728, lng: 138.0877 },
+            { name: "各務原市", lat: 35.4011, lng: 136.8441 },
+            { name: "岐阜県", lat: 35.3912, lng: 136.7223 },
+            { name: "富士宮市", lat: 35.2217, lng: 138.6119 },
+            { name: "静岡市", lat: 34.9756, lng: 138.3828 },
+            { name: "一宮市", lat: 35.3047, lng: 136.7978 },
+            { name: "名古屋市", lat: 35.1815, lng: 136.9066 },
+            { name: "安城市", lat: 34.9594, lng: 137.0864 },
+            { name: "愛知県", lat: 35.1802, lng: 136.9066 },
+            { name: "愛西市", lat: 35.1500, lng: 136.7275 },
+            { name: "扶桑町", lat: 35.3583, lng: 136.9111 },
+            { name: "豊橋市", lat: 34.7692, lng: 137.3914 },
+            { name: "豊田市", lat: 35.0825, lng: 137.1561 },
+            { name: "長久手市", lat: 35.1611, lng: 137.0503 },
+            { name: "三重県", lat: 34.7303, lng: 136.5086 },
+            { name: "大津市", lat: 35.0178, lng: 135.8547 },
+            { name: "彦根市", lat: 35.2744, lng: 136.2597 },
+            { name: "甲賀市", lat: 34.9656, lng: 136.1692 },
+            { name: "野洲市", lat: 35.1189, lng: 136.0275 },
+            { name: "亀岡市", lat: 35.0356, lng: 135.5739 },
+            { name: "京都市", lat: 35.0116, lng: 135.7681 },
+            { name: "交野市", lat: 34.7861, lng: 135.6811 },
+            { name: "大阪市", lat: 34.6937, lng: 135.5023 },
+            { name: "枚方市", lat: 34.8161, lng: 135.6500 },
+            { name: "茨木市", lat: 34.8164, lng: 135.5683 },
+            { name: "高槻市", lat: 34.8486, lng: 135.6175 },
+            { name: "姫路市", lat: 34.8150, lng: 134.6853 },
+            { name: "岡山市", lat: 34.6551, lng: 133.9196 },
+            { name: "岡山県", lat: 34.6618, lng: 133.9350 },
+            { name: "広島市", lat: 34.3853, lng: 132.4553 },
+            { name: "徳島市", lat: 34.0711, lng: 134.5517 },
+            { name: "北九州市", lat: 33.8833, lng: 130.8833 },
+            { name: "宗像市", lat: 33.8050, lng: 130.5414 },
+            { name: "熊本市", lat: 32.8031, lng: 130.7078 },
+            { name: "大分県", lat: 33.2381, lng: 131.6125 },
+            { name: "鹿児島市", lat: 31.5967, lng: 130.5572 }
+        ];
+
+        // ループ処理で地図上にピンを配置
+        locations.forEach(function(loc) {
+            L.marker([loc.lat, loc.lng])
+                .addTo(map)
+                .bindPopup('<b>' + loc.name + '</b>'); // ピンをクリックした時に名前を表示
+        });
+    </script>
+</body>
+</html>
